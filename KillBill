@@ -1,0 +1,33 @@
+KillBill is a utility to execute a set of commands on multiple servers.
+Language: Ruby
+Requirements: 'net-ssh' gem
+
+
+=========
+
+class KillBill
+  def initialize
+    @user = 'ubuntu'
+    @hosts = ['127.0.0.1']
+  end
+
+  def run
+    @hosts.each do |host|
+      Net::SSH.start(host, @user, :keys => 'file location') do |ssh|
+      	cmds.each { |cmd| ssh.exec!(cmd) }
+      end
+    end
+  end
+
+  def cmds
+  	arr = []
+  	arr << 'cd app'
+  	arr << 'git pull'
+  	arr << 'git checkout mybranch'
+  	arr << 'bundle install'
+  	arr << 'sudo service rails restart'
+  	arr
+  end
+end
+
+
